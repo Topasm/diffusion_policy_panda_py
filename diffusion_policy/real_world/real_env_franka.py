@@ -166,7 +166,7 @@ class RealEnvFranka:
             frequency=200,
             joints_init=None,
             joints_init_duration=5.0,
-            verbose=True,
+            verbose=False,
             receive_latency=robot_obs_latency
         )
 

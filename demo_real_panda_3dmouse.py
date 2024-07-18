@@ -24,7 +24,7 @@ import cv2
 import numpy as np
 import scipy.spatial.transform as st
 # from diffusion_policy.real_world.real_env import RealEnv
-from diffusion_policy.real_world.real_env_franka import RealEnvFranka
+from diffusion_policy.real_world.real_env_panda_2d import RealEnv
 from diffusion_policy.real_world.spacemouse_shared_memory import Spacemouse
 from diffusion_policy.common.precise_sleep import precise_wait
 from diffusion_policy.real_world.keystroke_counter import (
@@ -38,7 +38,7 @@ from diffusion_policy.real_world.keystroke_counter import (
 @click.option('--output', '-o', default="./data/demo_pusht_real", required=True, help="Directory to save demonstration dataset.")
 @click.option('--robot_ip', '-ri', default="172.16.0.2 ", required=True, help="Franka's IP address e.g. 172.16.0.2")
 @click.option('--vis_camera_idx', default=0, type=int, help="Which RealSense camera to visualize.")
-@click.option('--init_joints', '-j', is_flag=True, default=None,
+@click.option('--init_joints', '-j', is_flag=True, default=True,
               help="Whether to initialize robot joint configuration in the beginning.")
 @click.option('--frequency', '-f', default=10, type=float, help="Control frequency in Hz.")
 @click.option('--command_latency', '-cl', default=0.01, type=float,
@@ -48,11 +48,11 @@ def main(output, robot_ip, vis_camera_idx, init_joints, frequency, command_laten
     with SharedMemoryManager() as shm_manager:
         with KeystrokeCounter() as key_counter, \
                 Spacemouse(shm_manager=shm_manager) as sm, \
-                RealEnvFranka(
+                RealEnv(
                     output_dir=output,
                     robot_ip=robot_ip,
                     # recording resolution
-                    obs_image_resolution=(1280, 720),
+                    obs_image_resolution=(640, 480),
                     frequency=frequency,
                     init_joints=init_joints,
                     enable_multi_cam_vis=True,
@@ -70,14 +70,12 @@ def main(output, robot_ip, vis_camera_idx, init_joints, frequency, command_laten
             env.realsense.set_exposure(exposure=120, gain=0)
             # realsense white balance
             env.realsense.set_white_balance(white_balance=5900)
-
-            env.robot.start()
-            time.sleep(2.0)
+            # env.robot.start()
             state = env.get_robot_state()
             target_pose = state['ActualTCPPose']
-            print("target_pose", target_pose)
-            # print('Ready!')
+            print("ActualTCPPose", target_pose)
 
+            time.sleep(2.0)
             t_start = time.monotonic()
             iter_idx = 0
             stop = False
@@ -123,25 +121,25 @@ def main(output, robot_ip, vis_camera_idx, init_joints, frequency, command_laten
                         # delete
                 stage = key_counter[Key.space]
 
-                # visualize
-                vis_img = obs[f'camera_{vis_camera_idx}'][-1,
-                                                          :, :, ::-1].copy()
-                episode_id = env.replay_buffer.n_episodes
-                text = f'Episode: {episode_id}, Stage: {stage}'
-                if is_recording:
-                    text += ', Recording!'
-                cv2.putText(
-                    vis_img,
-                    text,
-                    (10, 30),
-                    fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale=1,
-                    thickness=2,
-                    color=(255, 255, 255)
-                )
+                # # visualize
+                # vis_img = obs[f'camera_{vis_camera_idx}'][-1,
+                #                                           :, :, ::-1].copy()
+                # episode_id = env.replay_buffer.n_episodes
+                # text = f'Episode: {episode_id}, Stage: {stage}'
+                # if is_recording:
+                #     text += ', Recording!'
+                # cv2.putText(
+                #     vis_img,
+                #     text,
+                #     (10, 30),
+                #     fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                #     fontScale=1,
+                #     thickness=2,
+                #     color=(255, 255, 255)
+                # )
 
-                cv2.imshow('default', vis_img)
-                cv2.pollKey()
+                # cv2.imshow('default', vis_img)
+                # cv2.pollKey()
 
                 precise_wait(t_sample)
                 # get teleop command
