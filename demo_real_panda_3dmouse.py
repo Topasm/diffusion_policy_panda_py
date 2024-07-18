@@ -69,7 +69,7 @@ def main(output, robot_ip, vis_camera_idx, init_joints, frequency, command_laten
             # realsense exposure
             env.realsense.set_exposure(exposure=120, gain=0)
             # realsense white balance
-            env.realsense.set_white_balance(white_balance=5900)
+            env.realsense.set_white_balance(white_balance=3900)
             # env.robot.start()
             state = env.get_robot_state()
             target_pose = state['ActualTCPPose']
