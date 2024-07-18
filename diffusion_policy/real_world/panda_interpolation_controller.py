@@ -249,7 +249,7 @@ class PandaInterpolationController(mp.Process):
                     ctrl.set_control(tip_pose[:3], st.Rotation.from_euler(
                         'xyz', tip_pose[3:]).as_quat().tolist())
 
-                    print("tip_pose", tip_pose)
+                    # print("tip_pose", tip_pose)
 
                     # update robot state
                     state = dict()

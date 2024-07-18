@@ -145,8 +145,8 @@ def main(output, robot_ip, vis_camera_idx, init_joints, frequency, command_laten
                 # get teleop command
                 sm_state = sm.get_motion_state_transformed()
                 # print(sm_state)
-                dpos = sm_state[:3] * (env.max_pos_speed / frequency)
-                drot_xyz = sm_state[3:] * (env.max_rot_speed / frequency)
+                dpos = sm_state[:3] * (env.max_pos_speed)
+                drot_xyz = sm_state[3:] * (env.max_rot_speed)
 
                 if not sm.is_button_pressed(0):
                     # translation mode
