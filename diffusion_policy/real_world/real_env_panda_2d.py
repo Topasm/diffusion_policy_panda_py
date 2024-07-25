@@ -18,9 +18,6 @@ from diffusion_policy.common.replay_buffer import ReplayBuffer
 from diffusion_policy.common.cv2_util import (
     get_image_transform, optimal_row_cols)
 
-from skill_utils.format_pose import to_format
-
-# TODO finish this.
 
 DEFAULT_OBS_KEY_MAP = {
     # robot
@@ -273,8 +270,8 @@ class RealEnv:
                     this_idx = is_before_idxs[-1]
                 this_idxs.append(this_idx)
             # remap key
-            # camera_obs[f'camera_{camera_idx}'] = value['color'][this_idxs]
-            camera_obs['image'] = value['color'][this_idxs]
+            camera_obs[f'camera_{camera_idx}'] = value['color'][this_idxs]
+            # camera_obs['image'] = value['color'][this_idxs]
 
         # align robot obs
         robot_timestamps = last_robot_data['robot_receive_timestamp']

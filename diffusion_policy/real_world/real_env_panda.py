@@ -17,7 +17,7 @@ from diffusion_policy.real_world.multi_camera_visualizer import MultiCameraVisua
 from diffusion_policy.common.replay_buffer import ReplayBuffer
 from diffusion_policy.common.cv2_util import (
     get_image_transform, optimal_row_cols)
-from skill_utils.format_pose import to_format
+# from skill_utils.format_pose import to_format
 
 DEFAULT_OBS_KEY_MAP = {
     # robot
