@@ -42,7 +42,7 @@ from diffusion_policy.real_world.keystroke_counter import (
               help="Whether to initialize robot joint configuration in the beginning.")
 @click.option('--frequency', '-f', default=10, type=float, help="Control frequency in Hz.")
 @click.option('--command_latency', '-cl', default=0.01, type=float,
-              help="Latency between receiving SapceMouse command to executing on Robot in Sec.")
+              help="Latency between receiving SpaceMouse command to executing on Robot in Sec.")
 def main(output, robot_ip, vis_camera_idx, init_joints, frequency, command_latency):
     dt = 1 / frequency
     with SharedMemoryManager() as shm_manager:
